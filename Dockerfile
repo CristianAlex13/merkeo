@@ -18,8 +18,11 @@ COPY . .
 # Instalar dependencias de Laravel
 RUN composer install --no-dev --optimize-autoloader
 
+# Crear carpeta y archivo de base de datos SQLite
+RUN mkdir -p /var/www/database && touch /var/www/database/database.sqlite
+
 # Establecer permisos
-RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database
 
 # Puerto de Laravel
 EXPOSE 8000

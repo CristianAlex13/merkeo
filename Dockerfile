@@ -1,9 +1,18 @@
 # Imagen base con PHP, Composer y extensiones necesarias
 FROM php:8.2-fpm
 
-# Instalar dependencias del sistema
+# Instalar dependencias del sistema (incluye sqlite3)
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libzip-dev \
+    zip \
+    unzip \
+    sqlite3 \
+    libsqlite3-dev
 
 # Instalar extensiones de PHP necesarias para Laravel
 RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
@@ -20,9 +29,6 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Crear carpeta y archivo de base de datos SQLite
 RUN mkdir -p /var/www/database && touch /var/www/database/database.sqlite
-
-# Generar la clave de aplicación (en caso de que APP_KEY no esté configurada)
-RUN php artisan key:generate --force || true
 
 # Establecer permisos
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/database

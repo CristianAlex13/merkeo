@@ -40,5 +40,7 @@ RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/ww
 # Exponer el puerto de Laravel
 EXPOSE 8000
 
+RUN php artisan migrate --force
+
 # Comando para iniciar Laravel
 CMD php artisan serve --host=0.0.0.0 --port=8000
